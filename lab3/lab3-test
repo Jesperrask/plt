@@ -1,0 +1,17 @@
+#!/bin/bash
+
+thisdir=`dirname $0`
+
+outdir=`dirname $1`
+file=`basename $1 .cc`
+jfile=$file.j
+
+java -cp "$thisdir:$CLASSPATH" lab3 "$1" | tee "$jfile"
+jasmin -d "$outdir" "$jfile"
+cp "${thisdir}/Runtime.class" "$outdir"
+
+# Test run
+pushd $outdir > /dev/null
+echo ""
+java -cp ".:$CLASSPATH" $file
+popd > /dev/null

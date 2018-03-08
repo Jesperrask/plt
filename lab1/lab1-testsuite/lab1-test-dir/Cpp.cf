@@ -1,0 +1,146 @@
+PDefs. 	Program ::= [Def] ;
+
+comment "//" ;
+comment "/*" "*/" ;
+comment "#";
+
+DFun.      	Def    	::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DFunEmpty.      Def    	::= Type Id "(" [Arg] ")" ";" ;
+DUsing.		Def    	::= "using" QualifiedConstant ";" ;
+DTypeDef.  	Def    	::= "typedef" Type Id ";" ;
+--DStat.		Def    	::= Type Id "=" Exp ";";
+DVariable. 	Def   	::= Decl ";" ;
+
+
+
+separator 	Def "" ;
+separator 	Arg "," ;
+terminator 	Stm "";
+
+
+
+AFunc.		Arg	  ::= Type;
+ADecl.	   	Arg 	  ::= Type Id;
+AConst.		Arg	  ::= "const" Type Id;
+AConstType.	Arg	  ::= "const" Type;
+AInitConst. 	Arg  	  ::= "const" Type Id "=" Exp;
+AInit.  	Arg  	  ::= Type Id "=" Exp;
+
+
+--DeclConst.	Decl  	::= "const" Type;	
+--DeclConstId.	Decl  	::= "const" Type Id;
+--Decl.		Decl  	::= Type Id;
+--DeclsConst.	Decl  	::= "const" Type Id "," [Id];
+--Decls.		Decl  	::= Type Id "," [Id];
+--DeclInit.      	Decl	::= Type Id "=" Exp ;
+--DeclInitConst.  Decl 	::= "const" Type Id "=" Exp ;
+
+DeclId.		IDecl		::= Id;
+IDeclAss.	IDecl		::= Id "=" Exp ;
+
+separator nonempty	IDecl	"," ;
+
+ConstDecl.		Decl ::= "const" Type [IDecl]  ;
+NoConstDecl. 	Decl ::= Type [IDecl]  ;
+
+
+
+
+
+--idea
+--(:[]).   [Init_declarator] ::= Init_declarator ;
+--(:).     [Init_declarator] ::= Init_declarator "," [Init_declarator] ;
+
+--OnlyDecl.  Init_declarator ::= Decl ;
+--InitDecl.  Init_declarator ::= Decl "=" Exp;
+
+
+
+--Statements
+STypeDef.  	Stm  	::= "typedef" Type Id ";" ;
+SExp. 		Stm 	::= Exp ";" ;
+SDecl.		Stm     ::= Decl ";" ;
+SReturn. 	Stm 	::= "return" Exp ";";
+SWhile.  	Stm    	::= "while" "(" Exp ")" Stm ;
+SDoWhile.  	Stm	::= "do" Stm "while" "(" Exp ")" ";" ;
+SBlock.  	Stm    	::= "{" [Stm] "}" ;
+SIfElse. 	Stm    	::= "if" "(" Exp ")" Stm "else" Stm ;
+SIf.	 	Stm    	::= "if" "(" Exp ")" Stm ;
+SFor.		Stm	::= "for" "(" Decl ";" Exp ";" Exp ")" Stm;
+SFuncConst.	Stm	::= "const" Type Id "=" Exp ";" ; 
+
+
+
+
+--Expressions
+EConst.  	Exp16  ::= QualifiedConstant;
+EString.	Exp16  ::= [String] ;
+EInt.    	Exp16  ::= Integer ;
+EDouble. 	Exp16  ::= Double ;
+ETrue.   	Exp16  ::= "true" ;
+EChar.		Exp16  ::= Char ;
+EFalse.  	Exp16  ::= "false" ;
+EIndex.		Exp15  ::= Exp15 "[" Exp "]" ;
+EApp.    	Exp15  ::= Exp15 "(" [Exp] ")" ;
+Emem.		Exp14  ::= Exp14 "." Exp15 ;
+EPIncr.  	Exp14  ::= Exp14 "++" ;
+EPDecr.  	Exp14  ::= Exp14 "--" ;
+EPointer.	Exp14  ::= Exp14 "->" Exp15 ;
+ENot.		Exp13  ::= "!" Exp13 ;
+EDRef.		Exp13  ::= "*" Exp13 ;
+EIncr.   	Exp13  ::= "++" Exp13 ;
+EDecr.   	Exp13  ::= "--" Exp13 ;
+ETimes.  	Exp12  ::= Exp12 "*"  Exp13 ;
+EDiv.    	Exp12  ::= Exp12 "/"  Exp13 ;
+EMod.		Exp12  ::= Exp12 "%"  Exp13 ;
+EPlus.   	Exp11  ::= Exp11 "+"  Exp12 ;
+EMinus.  	Exp11  ::= Exp11 "-"  Exp12 ;
+ELshift. 	Exp10  ::= Exp10 "<<" Exp11 ;
+ERshift. 	Exp10  ::= Exp10 ">>" Exp11 ;
+ELt.     	Exp9   ::= Exp9  "<"  Exp10 ;
+EGt.     	Exp9   ::= Exp9  ">"  Exp10 ;
+ELtEq.   	Exp9   ::= Exp9  "<=" Exp10 ;
+EGtWq.   	Exp9   ::= Exp9  ">=" Exp10 ;
+EEq.     	Exp8   ::= Exp8  "==" Exp9 ;
+ENEq.    	Exp8   ::= Exp8  "!=" Exp9 ;
+EAnd.    	Exp4   ::= Exp4  "&&" Exp5 ;
+EOr.     	Exp3   ::= Exp3  "||" Exp4 ;
+EAss.    	Exp3   ::= Exp3 "=" Exp4 ;
+EaDec. 		Exp2   ::= Exp3 "-=" Exp2 ;
+EaInc.  	Exp2   ::= Exp3 "+=" Exp2 ;
+EIfElse.  	Exp2   ::= Exp3 "?" Exp2 ":" Exp2 ;
+EThrow.   	Exp1   ::= "throw" Exp1 ;	
+
+
+
+coercions Exp 16 ;
+separator Exp "," ;
+separator nonempty String "";
+separator nonempty Id ",";
+
+
+
+--Types
+
+Tbool. 		Type ::= "bool" ;
+Tdouble. 	Type ::= "double" ;
+TFloat.		Type ::= "float" ;
+Tint. 		Type ::= "int" ;
+Tvoid. 		Type ::= "void" ;
+TChar. 		Type ::= "char" ;
+TList.		Type ::= QualifiedConstant ;
+TRef.     	Type ::= Type "&" ;
+
+
+TypeListElem. Types                            ::= Type ;
+QualifiedConstElemId. QualifiedConstElem       ::= Id;
+QualifiedConstElemInstance. QualifiedConstElem ::= Id "<" [Types] ">" ;
+separator nonempty Types "," ;
+
+QualifiedConstElems . QualifiedConstant ::= [QualifiedConstElem] ;
+separator nonempty QualifiedConstElem "::" ;
+
+
+
+token Id	(letter (letter | digit | '_')*) ;
+

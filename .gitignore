@@ -1,0 +1,9 @@
+*.cc~
+*.cf~
+.gitignore~
+/lab2/CPP
+*.java~
+*.hs~
+*.class
+*.tar.gz
+
